@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <!-- Head of the document. Load scripts and stuff. -->
+    <head>
+        <script src="jspsych/jspsych.js"></script> <!-- Load jspsych -->
+        <script src="jspsych/plugins/jspsych-html-keyboard-response.js"></script> <!-- Load required package -->
+        <script src="jspsych/plugins/jspsych-image-button-response.js"></script>
+        <!-- Loading the .css works differently (using a link, which does not require a closing tag).
+        It's necessary to tell it that it's a style sheet. -->
+        <link href="jspsych/css/jspsych.css" rel="stylesheet">
+    </head>
+
+    <body></body> 
+    <!-- Scripts come after the body -->
+    <script>
+        /* Empty timeline to be filled later */
+        var timeline = [];
+        var n_images = 3;
+
+        /* Object/variable with keys and values that we declare. We want to use html-keyboard-response from the plugin. */
+        var welcome_trial = {
+            type: 'html-keyboard-response',
+            stimulus: 'Welcome to my experiment.'
+        }
+        timeline.push(welcome_trial) /* Push to timeline */
+
+        console.log('This is useful for debugging.')
+
+        for (var i = 0; i<n_images; i++){
+            var image_button_trial = {
+                type: 'image-button-response',
+                stimulus: 'pics/lama' + i + '.jpg',
+                stimulus_height: 500,
+                choices: ['Yeah, Lama', 'Meh!']
+            }
+            timeline.push(image_button_trial)
+        }
+
+        jsPsych.init({
+            timeline: timeline,
+            on_finish: function(){
+                jsPsych.data.displayData();
+            }
+        })
+
+    </script>
+</html>
