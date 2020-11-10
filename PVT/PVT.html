@@ -2,7 +2,7 @@
 <html>
     <head>
         <script src="../jspsych/jspsych.js"></script>
-        <script src="..jspsych/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="../jspsych/plugins/jspsych-html-keyboard-response.js"></script>
         <link href="../jspsych/css/jspsych.css" rel="stylesheet">
     </head>
 
@@ -12,7 +12,7 @@
 
         // Timer function copied from:
         // https://stackoverflow.com/questions/20618355/the-simplest-possible-javascript-countdown-timer
-        function startTimer(duration, display) {
+        function startTimer(duration) {
             var start = Date.now(),
                 diff,
                 minutes,
@@ -29,12 +29,7 @@
                 minutes = minutes < 10 ? "0" + minutes : minutes;
                 seconds = seconds < 10 ? "0" + seconds : seconds;
                 display = document.querySelector('#time');
-                if (display !== null) {
-                    display.innerHTML = minutes + ":" + seconds;
-                }
-
-               // display.textContent = minutes + ":" + seconds; 
-               
+                display.innerHTML = minutes + ":" + seconds;
 
                 if (diff <= 0) {
                     // add one second so that the count down starts at the full duration
@@ -48,23 +43,36 @@
         }
 
         var timeline = [];
+        var n_trials = 3;
 
         var start_screen = {
             type: 'html-keyboard-response',
-            stimulus: 'So it begins.'
+            stimulus: 'So it begins.',
+            data: {condition: 'start_screen'}
         }
         timeline.push(start_screen)
 
-        var stopwatch = {
-            on_load: function () {
-                var fiveMinutes = 60 * 5,
-                display = document.querySelector('#time');
-                startTimer(fiveMinutes, display);
-            },
-            type: 'html-keyboard-response',
-            stimulus: '<div>Registration closes in <span id="time">05:00</span> minutes!</div>'
+        for (var i = 0; i<n_trials; i++){
+            var fixation = {
+                type: 'html-keyboard-response',
+                stimulus: '<span fontsize>+</span>',
+                choices: jsPsych.NO_KEYS,
+                trial_duration: 800,
+                data: {condition: 'fixation'}
+            }
+            timeline.push(fixation)
+
+            var stopwatch = {
+                on_load: function () {
+                var fiveMinutes = 60 * 5
+                startTimer(fiveMinutes);
+                },
+                type: 'html-keyboard-response',
+                stimulus: '<div><span id="time">05:00</span></div>',
+                data: {condition: 'stopwatch'}
+            }
+            timeline.push(stopwatch)
         }
-        timeline.push(stopwatch)
 
         jsPsych.init({
             timeline: timeline,
