@@ -47,7 +47,9 @@
 
         var start_screen = {
             type: 'html-keyboard-response',
-            stimulus: 'So it begins.',
+            stimulus: 'So it begins.<p>' +
+                      'Press a button to continue.<p>' +
+                      'Press a button every time the clock appears.',
             data: {condition: 'start_screen'}
         }
         timeline.push(start_screen)
