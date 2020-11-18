@@ -1,33 +1,28 @@
 var timer_interval; // declare the variable in global scope, but leave it undefined so that you don't start the timer yet
-var minutes,
-    seconds,
-    milliseconds;
+var diff;
 
 // Timer function copied from:
 // https://stackoverflow.com/questions/20618355/the-simplest-possible-javascript-countdown-timer
 function startTimer() {
-    var start = Date.now(),
-        diff;
+    var start = Date.now();
 
     // Interval in a variable so it can be reset
-    timer_interval = setInterval(timer, 10); // now set the value of the timer_interval variable, which also starts the timer
+    timer_interval = setInterval(timer, 1); // now set the value of the timer_interval variable, which also starts the timer
 
     function timer() {
         // get the number of seconds that have elapsed since 
         // startTimer() was called
-        diff = (((Date.now() - start) / 10) | 0);
+        diff = (((Date.now() - start)) | 0);
+        diff = String(diff);
 
-        // does the same job as parseInt truncates the float
-        minutes = (diff / 6000) | 0;
-        seconds = ((diff / 100) % 60) | 0;
-        milliseconds = (diff % 100) | 0;
+        // TO DO: Add 00s
 
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-        milliseconds = milliseconds < 10 ? "0" + milliseconds : milliseconds;
+        //if (diff < 10000) {diff = "0" + }
+
+        // diff = diff < 10000 ? "0000" + diff : diff;
 
         display = document.querySelector('#time');
-        display.innerHTML = minutes + ":" + seconds + ":" + milliseconds;
+        display.innerHTML = diff;
 
     };
     // we don't want to wait a full second before the timer starts
@@ -48,7 +43,7 @@ var start_screen = {
 // TO DO: Make fixation jitter
 var fixation = {
     type: 'html-keyboard-response',
-    stimulus: '<span fontsize class = "fixation">00:00:00</span>',
+    stimulus: '<span fontsize class = "fixation">00000</span>',
     choices: jsPsych.NO_KEYS,
     trial_duration: 800,
     data: { condition: 'fixation' }
@@ -59,13 +54,11 @@ var stopwatch = {
         startTimer();
     },
     type: 'html-keyboard-response',
-    stimulus: '<div><span id="time" class="time">00:00</span></div>',
+    stimulus: '<div><span id="time" class="time">00000</span></div>',
     data: { condition: 'stopwatch' },
     on_finish: function (data) {
-        data.minutes = minutes;
-        data.seconds = seconds;
-        data.milliseconds = milliseconds;
-        console.log(minutes + ":" + seconds + ":" + milliseconds);
+        data.diff = diff;
+        console.log(diff);
         clearInterval(timer_interval); // this should now work without producing an error because timer_interval was declared outside of a function
     }
 }
@@ -74,11 +67,9 @@ var stopwatch = {
 var feedback = {
     type: 'html-keyboard-response',
     stimulus: function(){
-        min = jsPsych.data.getLastTrialData().values()[0].minutes;
-        sec = jsPsych.data.getLastTrialData().values()[0].seconds;
-        ms = jsPsych.data.getLastTrialData().values()[0].milliseconds;
+        df = jsPsych.data.getLastTrialData().values()[0].diff;
 
-        return(`<div><span class="feedback">${minutes}:${seconds}:${milliseconds}</span></div>`);
+        return(`<div><span class="feedback">${df}</span></div>`);
     },
     choices: jsPsych.NO_KEYS,
     trial_duration: 1000,
