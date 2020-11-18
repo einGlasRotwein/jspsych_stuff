@@ -1,12 +1,13 @@
 var timer_interval; // declare the variable in global scope, but leave it undefined so that you don't start the timer yet
+var minutes,
+    seconds,
+    milliseconds;
+
 // Timer function copied from:
 // https://stackoverflow.com/questions/20618355/the-simplest-possible-javascript-countdown-timer
 function startTimer() {
     var start = Date.now(),
-        diff,
-        minutes,
-        seconds,
-        milliseconds;
+        diff;
 
     // Interval in a variable so it can be reset
     timer_interval = setInterval(timer, 10); // now set the value of the timer_interval variable, which also starts the timer
@@ -28,14 +29,9 @@ function startTimer() {
         display = document.querySelector('#time');
         display.innerHTML = minutes + ":" + seconds + ":" + milliseconds;
 
-/*         if (diff <= 0) {
-            // add one second so that the count down starts at the full duration
-            // example 05:00 not 04:59
-            start = Date.now() + 1000;
-        } */
     };
     // we don't want to wait a full second before the timer starts
-    timer();
+    minutes = timer();
 }
 
 var timeline = [];
@@ -51,7 +47,7 @@ var start_screen = {
 
 var fixation = {
     type: 'html-keyboard-response',
-    stimulus: '<span fontsize>+</span>',
+    stimulus: '<span fontsize class = "fixation">00:00:00</span>',
     choices: jsPsych.NO_KEYS,
     trial_duration: 800,
     data: { condition: 'fixation' }
@@ -62,9 +58,13 @@ var stopwatch = {
         startTimer();
     },
     type: 'html-keyboard-response',
-    stimulus: '<div><span id="time">05:00</span></div>',
+    stimulus: '<div><span id="time" class="time">00:00</span></div>',
     data: { condition: 'stopwatch' },
-    on_finish: function () {
+    on_finish: function (data) {
+        data.minutes = minutes;
+        data.seconds = seconds;
+        data.milliseconds = milliseconds;
+        console.log(minutes + ":" + seconds + ":" + milliseconds);
         clearInterval(timer_interval); // this should now work without producing an error because timer_interval was declared outside of a function
     }
 }
