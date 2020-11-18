@@ -45,6 +45,7 @@ var start_screen = {
     data: { condition: 'start_screen' }
 }
 
+// TO DO: Make fixation jitter
 var fixation = {
     type: 'html-keyboard-response',
     stimulus: '<span fontsize class = "fixation">00:00:00</span>',
@@ -69,12 +70,30 @@ var stopwatch = {
     }
 }
 
+// Leave the time when the stopwatch was stopped on the screen for a bit
+var feedback = {
+    type: 'html-keyboard-response',
+    stimulus: function(){
+        min = jsPsych.data.getLastTrialData().values()[0].minutes;
+        sec = jsPsych.data.getLastTrialData().values()[0].seconds;
+        ms = jsPsych.data.getLastTrialData().values()[0].milliseconds;
+
+        return(`<div><span class="feedback">${minutes}:${seconds}:${milliseconds}</span></div>`);
+    },
+    choices: jsPsych.NO_KEYS,
+    trial_duration: 1000,
+    data: { condition: 'feedback' }
+}
+
+// TIMELINE
 timeline.push(start_screen)
 
+// TO DO: Have this as a routine?
 for (var i = 0; i < n_trials; i++) {
 
-    timeline.push(fixation)
-    timeline.push(stopwatch)
+    timeline.push(fixation);
+    timeline.push(stopwatch);
+    timeline.push(feedback);
 }
 
 jsPsych.init({
