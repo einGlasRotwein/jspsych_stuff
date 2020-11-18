@@ -45,30 +45,33 @@ var start_screen = {
         'Press a button every time the clock appears.',
     data: { condition: 'start_screen' }
 }
+
+var fixation = {
+    type: 'html-keyboard-response',
+    stimulus: '<span fontsize>+</span>',
+    choices: jsPsych.NO_KEYS,
+    trial_duration: 800,
+    data: { condition: 'fixation' }
+}
+
+var stopwatch = {
+    on_load: function () {
+        var fiveMinutes = 60 * 5
+        startTimer(fiveMinutes);
+    },
+    type: 'html-keyboard-response',
+    stimulus: '<div><span id="time">05:00</span></div>',
+    data: { condition: 'stopwatch' },
+    on_finish: function () {
+        clearInterval(timer_interval); // this should now work without producing an error because timer_interval was declared outside of a function
+    }
+}
+
 timeline.push(start_screen)
 
 for (var i = 0; i < n_trials; i++) {
-    var fixation = {
-        type: 'html-keyboard-response',
-        stimulus: '<span fontsize>+</span>',
-        choices: jsPsych.NO_KEYS,
-        trial_duration: 800,
-        data: { condition: 'fixation' }
-    }
-    timeline.push(fixation)
 
-    var stopwatch = {
-        on_load: function () {
-            var fiveMinutes = 60 * 5
-            startTimer(fiveMinutes);
-        },
-        type: 'html-keyboard-response',
-        stimulus: '<div><span id="time">05:00</span></div>',
-        data: { condition: 'stopwatch' },
-        on_finish: function () {
-            clearInterval(timer_interval); // this should now work without producing an error because timer_interval was declared outside of a function
-        }
-    }
+    timeline.push(fixation)
     timeline.push(stopwatch)
 }
 
