@@ -1,7 +1,7 @@
 var timer_interval; // declare the variable in global scope, but leave it undefined so that you don't start the timer yet
 var minutes,
     seconds,
-    milliseconds;
+    deciseconds;
 
 // Timer function copied from:
 // https://stackoverflow.com/questions/20618355/the-simplest-possible-javascript-countdown-timer
@@ -20,14 +20,14 @@ function startTimer() {
         // does the same job as parseInt truncates the float
         minutes = (diff / 6000) | 0;
         seconds = ((diff / 100) % 60) | 0;
-        milliseconds = (diff % 100) | 0;
+        deciseconds = (diff % 100) | 0;
 
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
-        milliseconds = milliseconds < 10 ? "0" + milliseconds : milliseconds;
+        deciseconds = deciseconds < 10 ? "0" + deciseconds : deciseconds;
 
         display = document.querySelector('#time');
-        display.innerHTML = minutes + ":" + seconds + ":" + milliseconds;
+        display.innerHTML = minutes + ":" + seconds + ":" + deciseconds;
 
     };
     // we don't want to wait a full second before the timer starts
@@ -64,8 +64,8 @@ var stopwatch = {
     on_finish: function (data) {
         data.minutes = minutes;
         data.seconds = seconds;
-        data.milliseconds = milliseconds;
-        console.log(minutes + ":" + seconds + ":" + milliseconds);
+        data.deciseconds = deciseconds;
+        console.log(minutes + ":" + seconds + ":" + deciseconds);
         clearInterval(timer_interval); // this should now work without producing an error because timer_interval was declared outside of a function
     }
 }
@@ -76,9 +76,9 @@ var feedback = {
     stimulus: function(){
         min = jsPsych.data.getLastTrialData().values()[0].minutes;
         sec = jsPsych.data.getLastTrialData().values()[0].seconds;
-        ms = jsPsych.data.getLastTrialData().values()[0].milliseconds;
+        ms = jsPsych.data.getLastTrialData().values()[0].deciseconds;
 
-        return(`<div><span class="feedback">${minutes}:${seconds}:${milliseconds}</span></div>`);
+        return(`<div><span class="feedback">${minutes}:${seconds}:${deciseconds}</span></div>`);
     },
     choices: jsPsych.NO_KEYS,
     trial_duration: 1000,
