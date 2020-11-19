@@ -62,8 +62,12 @@ var stopwatch = {
     data: { condition: 'stopwatch' },
     trial_duration: 10000,
     on_finish: function (data) {
+        /* diff and elapsed time are not completely aligned, so diff will stop
+        at 99998 or something. So if the participants did not make a response,
+        we set the display to 10000.*/
+        if (data.rt === null) diff = '10000';
+
         data.diff = diff;
-        console.log(diff);
         clearInterval(timer_interval); // this should now work without producing an error because timer_interval was declared outside of a function
     }
 }
