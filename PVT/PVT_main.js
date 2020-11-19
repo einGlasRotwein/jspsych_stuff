@@ -16,13 +16,13 @@ function startTimer() {
 
         // add 00s if necessary
         if (diff.length == 4) {
-            diff = '0' + diff;
+            diff = `<span style="color: rgb(104, 30, 30)">0</span><span style="color:  rgb(241, 26, 26)">${diff}</span>`;
         } else if (diff.length == 3) {
-            diff = '00' + diff;
+            diff = `<span style="color: rgb(104, 30, 30)">00</span><span style="color:  rgb(241, 26, 26)">${diff}</span>`;
         } else if (diff.length == 2) {
-            diff = '000' + diff;
+            diff = `<span style="color: rgb(104, 30, 30)">000</span><span style="color:  rgb(241, 26, 26)">${diff}</span>`;
         } else if (diff.length == 1) {
-            diff = '0000' + diff;
+            diff = `<span style="color: rgb(104, 30, 30)">0000</span><span style="color:  rgb(241, 26, 26)">${diff}</span>`;
         }
 
         display = document.querySelector('#time');
