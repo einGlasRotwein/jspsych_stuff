@@ -41,13 +41,17 @@ var start_screen = {
     stimulus: 'So it begins.<p>' +
         'Press a button to continue.<p>' +
         'Press a button every time the clock appears.',
-    data: { condition: 'start_screen' }
+    data: { condition: 'start_screen' },
+    on_finish: function() {
+        disp = document.querySelector('.jspsych-display-element');
+        disp.style.background = '#000000';
+    }
 }
 
 // TO DO: Make fixation jitter
 var fixation = {
     type: 'html-keyboard-response',
-    stimulus: '<span fontsize class = "fixation">00000</span>',
+    stimulus: '<span class = "fixation">00000</span>',
     choices: jsPsych.NO_KEYS,
     trial_duration: 800,
     data: { condition: 'fixation' }
@@ -99,6 +103,8 @@ for (var i = 0; i < n_trials; i++) {
 jsPsych.init({
     timeline: timeline,
     on_finish: function () {
+        disp = document.querySelector('.jspsych-display-element');
+        disp.style.background = '#eee';
         jsPsych.data.displayData();
     }
 })

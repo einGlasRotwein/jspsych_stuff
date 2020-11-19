@@ -129,15 +129,17 @@
 /* Style stopwatch */
 .time {
   font-size: 40px;
+  color: rgb(241, 26, 26);
 }
 
 /* Fixation in between should be grey */
 .fixation {
   font-size: 40px;
-  color: #aaa;
+  color: rgb(104, 30, 30);
 }
 
 .feedback {
   font-size: 40px;
+  color: rgb(241, 26, 26);
 }
 
