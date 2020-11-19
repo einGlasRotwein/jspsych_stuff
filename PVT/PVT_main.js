@@ -1,8 +1,7 @@
 var timer_interval; // declare the variable in global scope, but leave it undefined so that you don't start the timer yet
 var diff;
 
-// Timer function copied from:
-// https://stackoverflow.com/questions/20618355/the-simplest-possible-javascript-countdown-timer
+// Timer function 
 function startTimer() {
     var start = Date.now();
 
@@ -15,11 +14,16 @@ function startTimer() {
         diff = (((Date.now() - start)) | 0);
         diff = String(diff);
 
-        // TO DO: Add 00s
-
-        //if (diff < 10000) {diff = "0" + }
-
-        // diff = diff < 10000 ? "0000" + diff : diff;
+        // add 00s if necessary
+        if (diff.length == 4) {
+            diff = '0' + diff;
+        } else if (diff.length == 3) {
+            diff = '00' + diff;
+        } else if (diff.length == 2) {
+            diff = '000' + diff;
+        } else if (diff.length == 1) {
+            diff = '0000' + diff;
+        }
 
         display = document.querySelector('#time');
         display.innerHTML = diff;
