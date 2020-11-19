@@ -60,6 +60,7 @@ var stopwatch = {
     type: 'html-keyboard-response',
     stimulus: '<div><span id="time" class="time">00000</span></div>',
     data: { condition: 'stopwatch' },
+    trial_duration: 10000,
     on_finish: function (data) {
         data.diff = diff;
         console.log(diff);
