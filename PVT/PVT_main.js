@@ -92,11 +92,14 @@ var feedback = {
 var timeline = [];
 timeline.push(start_screen)
 
-var fixation_durations = [
-    { fixation_duration: 800},
-    { fixation_duration: 1600},
-    { fixation_duration: 5000}
-  ];
+// Set up jittered fixation durations in an array
+var fixation_durations = [];
+
+var durations = [800, 1600, 5000];
+
+for (let i = 0; i < durations.length; i++) {
+    fixation_durations.push({fixation_duration: durations[i]});
+}
 
 // Set up a procedure
 var PVT_procedure = {
