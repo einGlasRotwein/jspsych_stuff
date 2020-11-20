@@ -1,6 +1,7 @@
 var timer_interval; // declare the variable in global scope, but leave it undefined so that you don't start the timer yet
 var diff;
 
+// FUNCTIONS
 // Timer function 
 function startTimer() {
     var start = Date.now();
@@ -33,9 +34,7 @@ function startTimer() {
     minutes = timer();
 }
 
-var timeline = [];
-var n_trials = 3;
-
+// TRIALS
 var start_screen = {
     type: 'html-keyboard-response',
     stimulus: 'So it begins.<p>' +
@@ -53,7 +52,7 @@ var fixation = {
     type: 'html-keyboard-response',
     stimulus: '<span class = "fixation">00000</span>',
     choices: jsPsych.NO_KEYS,
-    trial_duration: 800,
+    trial_duration: jsPsych.timelineVariable('fixation_duration'),
     data: { condition: 'fixation' }
 }
 
@@ -89,16 +88,22 @@ var feedback = {
     data: { condition: 'feedback' }
 }
 
-// TIMELINE
+// BUILD TIMELINE
+var timeline = [];
 timeline.push(start_screen)
 
-// TO DO: Have this as a routine?
-for (var i = 0; i < n_trials; i++) {
+var fixation_durations = [
+    { fixation_duration: 800},
+    { fixation_duration: 1600},
+    { fixation_duration: 5000}
+  ];
 
-    timeline.push(fixation);
-    timeline.push(stopwatch);
-    timeline.push(feedback);
-}
+// Set up a procedure
+var PVT_procedure = {
+    timeline: [fixation, stopwatch, feedback],
+    timeline_variables: fixation_durations
+  }
+timeline.push(PVT_procedure)
 
 jsPsych.init({
     timeline: timeline,
