@@ -88,6 +88,17 @@ var feedback = {
     data: { condition: 'feedback' }
 }
 
+// Screen shown at the end of the experiment
+var end_screen = {
+    type: 'html-keyboard-response',
+    stimulus: 'Great job, you can close this page now.',
+    data: { condition: 'send_screen' },
+    on_load: function () {
+        disp = document.querySelector('.jspsych-display-element');
+        disp.style.background = '#fff';
+    }
+}
+
 // BUILD TIMELINE
 var timeline = [];
 timeline.push(start_screen)
@@ -108,11 +119,11 @@ var PVT_procedure = {
   }
 timeline.push(PVT_procedure)
 
+timeline.push(end_screen);
+
 jsPsych.init({
     timeline: timeline,
     on_finish: function () {
-        disp = document.querySelector('.jspsych-display-element');
-        disp.style.background = '#eee';
         jsPsych.data.displayData();
     }
 })
