@@ -84,7 +84,7 @@ var feedback = {
         return(`<div><span class="feedback">${df}</span></div>`);
     },
     choices: jsPsych.NO_KEYS,
-    trial_duration: 1000,
+    trial_duration: 1500,
     data: { condition: 'feedback' }
 }
 
