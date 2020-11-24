@@ -56,6 +56,20 @@ var fixation = {
     data: { condition: 'fixation' }
 }
 
+var if_fixation = {
+    timeline: [fixation],
+    conditional_function: function(){
+        // get the data from the previous trial,
+        // and check how much time has passed until the end of the last trial
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.time_elapsed > 10000){
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
 var stopwatch = {
     on_load: function () {
         startTimer();
@@ -75,6 +89,20 @@ var stopwatch = {
     }
 }
 
+var if_stopwatch = {
+    timeline: [stopwatch],
+    conditional_function: function(){
+        // get the data from the previous trial,
+        // and check how much time has passed until the end of the last trial
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.time_elapsed > 10000){
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
 // Leave the time when the stopwatch was stopped on the screen for a bit
 var feedback = {
     type: 'html-keyboard-response',
@@ -88,6 +116,20 @@ var feedback = {
     data: { condition: 'feedback' }
 }
 
+var if_feedback = {
+    timeline: [feedback],
+    conditional_function: function(){
+        // get the data from the previous trial,
+        // and check how much time has passed until the end of the last trial
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.time_elapsed > 10000){
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
 // Screen shown at the end of the experiment
 var end_screen = {
     type: 'html-keyboard-response',
@@ -99,6 +141,30 @@ var end_screen = {
     }
 }
 
+/// TRY OUT IF NODES!!!
+
+var pre_if_trial = {
+    type: 'html-keyboard-response',
+    stimulus: 'The next trial is in a conditional statement. It will only show up if 30 seconds have passed by now.',
+    on_load: function () {
+        disp = document.querySelector('.jspsych-display-element');
+        disp.style.background = '#fff';
+    }
+}
+
+/* var if_trial = {
+    type: 'html-keyboard-response',
+    stimulus: 'Seems like more than 30 seconds have passed. Press any key to continue.'
+} */
+
+/* var after_if_trial = {
+    type: 'html-keyboard-response',
+    stimulus: 'This is the trial after the conditional.'
+} */
+
+/// END OF TRYING IF NODES
+
+
 // BUILD TIMELINE
 var timeline = [];
 timeline.push(start_screen)
@@ -106,7 +172,7 @@ timeline.push(start_screen)
 // Set up jittered fixation durations in an array
 var fixation_durations = [];
 
-var durations = [800, 1600, 5000];
+var durations = [800, 1600, 2000];
 
 for (let i = 0; i < durations.length; i++) {
     fixation_durations.push({fixation_duration: durations[i]});
@@ -114,10 +180,11 @@ for (let i = 0; i < durations.length; i++) {
 
 // Set up a procedure
 var PVT_procedure = {
-    timeline: [fixation, stopwatch, feedback],
+    timeline: [if_fixation, if_stopwatch, if_feedback],
     timeline_variables: fixation_durations
-  }
-timeline.push(PVT_procedure)
+}
+
+timeline.push(PVT_procedure);
 
 timeline.push(end_screen);
 
