@@ -130,40 +130,45 @@ var if_feedback = {
     }
 }
 
+// Add if trial to show before end screen if
+// a) The duration is > maximum
+// b) The previous trial was a stopwatch trial, which means that the experiment
+//    stopped after the time limit was reached during a stopwatch trial. Which
+//    means feedback was not shown and the trial ended abruptly.
+var missing_feedback = {
+    type: 'html-keyboard-response',
+    stimulus: function(){
+        df = jsPsych.data.getLastTrialData().values()[0].diff;
+
+        return(`<div><span class="feedback">${df}</span></div>`);
+    },
+    choices: jsPsych.NO_KEYS,
+    trial_duration: 1500,
+    data: { condition: 'feedback' }
+}
+
+var if_missing_feedback = {
+    timeline: [missing_feedback],
+    conditional_function: function(){
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(data.condition === 'stopwatch'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
 // Screen shown at the end of the experiment
 var end_screen = {
     type: 'html-keyboard-response',
     stimulus: 'Great job, you can close this page now.',
-    data: { condition: 'send_screen' },
+    data: { condition: 'end_screen' },
     on_load: function () {
         disp = document.querySelector('.jspsych-display-element');
         disp.style.background = '#fff';
     }
 }
-
-/// TRY OUT IF NODES!!!
-
-var pre_if_trial = {
-    type: 'html-keyboard-response',
-    stimulus: 'The next trial is in a conditional statement. It will only show up if 30 seconds have passed by now.',
-    on_load: function () {
-        disp = document.querySelector('.jspsych-display-element');
-        disp.style.background = '#fff';
-    }
-}
-
-/* var if_trial = {
-    type: 'html-keyboard-response',
-    stimulus: 'Seems like more than 30 seconds have passed. Press any key to continue.'
-} */
-
-/* var after_if_trial = {
-    type: 'html-keyboard-response',
-    stimulus: 'This is the trial after the conditional.'
-} */
-
-/// END OF TRYING IF NODES
-
 
 // BUILD TIMELINE
 var timeline = [];
@@ -185,6 +190,8 @@ var PVT_procedure = {
 }
 
 timeline.push(PVT_procedure);
+
+timeline.push(if_missing_feedback);
 
 timeline.push(end_screen);
 
